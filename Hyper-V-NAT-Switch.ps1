@@ -1,3 +1,14 @@
+<#
+By Christopher.Hermance
+EMAIL cmhermance@gmail.com
+
+This powershell script must be run as admin.
+
+This script builds a virtual switch and then a asigns all vms to that switch.
+
+/#>
+
+
 ﻿#Vegetables
 $SwitchName = "CMLab_Switch"
 $NetworName = "CMLab_External"
@@ -14,5 +25,5 @@ New-NetIPAddress -IPAddress 192.168.10.1 -PrefixLength 24 -InterfaceIndex $Indes
 #Builds the Actual Nat 
 New-NetNat -Name $NetworName -InternalIPInterfaceAddressPrefix 192.168.10.0/24
 
-#Connects all VM to NAT Network
+#Connects all VM to NAT Network. Omit or Edit if only wishing to assign a single vm.
 Get-VM | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $SwitchName
