@@ -11,7 +11,10 @@ This script builds a virtual switch and then a asigns all vms to that switch.
 
 ﻿#Vegetables
 $SwitchName = "CMLab_Switch"
-$NetworName = "CMLab_External"
+$NetworName = "CMLab_External
+$IPSpace = "192.168.10."
+$Netmaskfull = "255.255.255.0"
+$Netmaskshort = "\24"
 
 #Builds and Internal Switch
 New-VMSwitch -SwitchName $SwitchName -SwitchType Internal
