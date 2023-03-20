@@ -6,6 +6,11 @@ This powershell script must be run as admin.
 
 This script builds a virtual switch and then a asigns all vms to that switch.
 
+Make sure 3rd Party firewalls such as McAfee, Avast or simular are set to trus the network or NAT may not wortk as expected.
+Example.
+
+DNS will travers but actual web traffic may not. 
+
 /#>
 
 
