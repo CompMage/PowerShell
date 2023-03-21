@@ -14,12 +14,12 @@ DNS will travers but actual web traffic may not.
 /#>
 
 
-﻿#Vegetables
+#Variables
 $SwitchName = "CMLab_Switch"
 $NetworName = "CMLab_External"
 $IPSpace = "192.168.10."
-$Netmaskfull = "255.255.255.0"
-$Netmaskshort = "\24"
+$Netmaskshort = "24"
+$VLANID = "1234"
 
 #Builds and Internal Switch
 New-VMSwitch -SwitchName $SwitchName -SwitchType Internal
@@ -28,10 +28,14 @@ New-VMSwitch -SwitchName $SwitchName -SwitchType Internal
 $IndesID = Get-NetAdapter -Name "vEthernet ($SwitchName)" 
 
 #Assigns an IP address and subnetmask to thr Virtual Switch Network Adapter
-New-NetIPAddress -IPAddress 192.168.10.1 -PrefixLength 24 -InterfaceIndex $IndesID.ifIndex
+New-NetIPAddress -IPAddress "$IPSpace.1" -PrefixLength $Netmaskshort -InterfaceIndex $IndesID.ifIndex
 
 #Builds the Actual Nat 
-New-NetNat -Name $NetworName -InternalIPInterfaceAddressPrefix 192.168.10.0/24
+New-NetNat -Name $NetworName -InternalIPInterfaceAddressPrefix "$IPSpace.0/$Netmaskshort"
 
 #Connects all VM to NAT Network. Omit or Edit if only wishing to assign a single vm.
 Get-VM | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $SwitchName
+
+#For VLAN Access
+#Get-VMNetworkAdapter -SwitchName $SwitchName -ManagementOS | Set-VMNetworkAdapterVlan -Access -VlanId $VLANID
+#Get-VM| Get-VMNetworkAdapter | Set-VMNetworkAdapterVlan -Access -VlanId $VLANID 
